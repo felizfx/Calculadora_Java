@@ -22,16 +22,19 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
     }
 
+    //Função para pegar os numeros
     public void getValue(View view) {
     TextView result = (TextView) findViewById(R.id.resultado);
     String btn = ((Button) view).getText().toString();
     Button btnid = ((Button) view);
+    //Verificando se ja existe um calculoa feito na Array
     if(arr.size() == 1) {
         valor += btn;
         result.setText("");
         result.setText(result.getText().toString() + btn);
         arr.clear();
     } else {
+        //Adicionando o numero a String 'valor' para poder mandar para a Array com alguns tratamentos
         if(btnid.getId() == R.id.button0){
             if(valor == ""){
                 valor += btn;
@@ -48,11 +51,14 @@ public class MainActivity extends AppCompatActivity {
         System.out.println(valor);
     }
 
+    //Função para pegar os operadores matematicos
     public void getOperator(View view) {
         TextView result = (TextView)findViewById(R.id.resultado);
+        //Verificando se ja foi inserido algum valor
         if(result.getText().toString() == ""){
             Toast.makeText(this, "Insira primeiro os valores", Toast.LENGTH_SHORT).show();
         } else {
+            //Adicionando na Array com alguns tratamentos e verificações
             if(valor != ""){
                 arr.add(valor);
                 valor="";
@@ -71,6 +77,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    //Função de calculo
     public void calc(View view) {
         if(valor != ""){
             arr.add(valor);
@@ -153,6 +160,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    //Funções de operadores matematicos
     public static double sum(double num1, double num2){
         return num1 + num2;
     }
@@ -169,6 +177,7 @@ public class MainActivity extends AppCompatActivity {
         return num1 / num2;
     }
 
+    //Função para verificar se um numero é float ou não
     public static boolean isFloat(String num){
         try{
             Float numFloat = Float.parseFloat(num);
@@ -178,6 +187,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    //Função para limpar todos os valores
     public void clear(View view) {
         TextView result = (TextView)findViewById(R.id.resultado);
         result.setText("");
