@@ -42,6 +42,12 @@ public class MainActivity extends AppCompatActivity {
             }
             if(valor.charAt(0) != '0'){
                 result.setText(result.getText().toString() + btn);
+                valor += btn;
+            } else {
+                if(valor.length() > 1) {
+                    result.setText(result.getText().toString() + btn);
+                    valor += btn;
+                }
             }
         } else {
             valor += btn;
@@ -54,15 +60,15 @@ public class MainActivity extends AppCompatActivity {
     //Função para pegar os operadores matematicos
     public void getOperator(View view) {
         TextView result = (TextView)findViewById(R.id.resultado);
+        if(valor != ""){
+            arr.add(valor);
+            valor="";
+        }
         //Verificando se ja foi inserido algum valor
-        if(result.getText().toString() == ""){
+        if(arr.size() == 0){
             Toast.makeText(this, "Insira primeiro os valores", Toast.LENGTH_SHORT).show();
         } else {
             //Adicionando na Array com alguns tratamentos e verificações
-            if(valor != ""){
-                arr.add(valor);
-                valor="";
-            }
             String btn = ((Button)view).getText().toString();
             if (isFloat(arr.get(arr.size() - 1))) {
                 arr.add(btn);
