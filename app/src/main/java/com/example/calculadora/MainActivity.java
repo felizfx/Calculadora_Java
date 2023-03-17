@@ -25,6 +25,7 @@ public class MainActivity extends AppCompatActivity {
     //Função para pegar os numeros
     public void getValue(View view) {
     TextView result = (TextView) findViewById(R.id.resultado);
+    TextView historico = (TextView) findViewById(R.id.historico);
     String btn = ((Button) view).getText().toString();
     Button btnid = ((Button) view);
     //Verificando se ja existe um calculoa feito na Array
@@ -32,6 +33,8 @@ public class MainActivity extends AppCompatActivity {
         valor += btn;
         result.setText("");
         result.setText(result.getText().toString() + btn);
+        historico.setText("");
+        historico.setText(historico.getText().toString() + btn);
         arr.clear();
     } else {
         //Adicionando o numero a String 'valor' para poder mandar para a Array com alguns tratamentos
@@ -39,19 +42,23 @@ public class MainActivity extends AppCompatActivity {
             if(valor == ""){
                 valor += btn;
                 result.setText(result.getText().toString() + btn);
+                historico.setText(historico.getText().toString() + btn);
             }
             if(valor.charAt(0) != '0'){
                 result.setText(result.getText().toString() + btn);
+                historico.setText(historico.getText().toString() + btn);
                 valor += btn;
             } else {
                 if(valor.length() > 1) {
                     result.setText(result.getText().toString() + btn);
+                    historico.setText(historico.getText().toString() + btn);
                     valor += btn;
                 }
             }
         } else {
             valor += btn;
             result.setText(result.getText().toString() + btn);
+            historico.setText(historico.getText().toString() + btn);
         }
         }
         System.out.println(valor);
@@ -60,10 +67,12 @@ public class MainActivity extends AppCompatActivity {
     //Função para pegar os operadores matematicos
     public void getOperator(View view) {
         TextView result = (TextView)findViewById(R.id.resultado);
+        TextView historico = (TextView) findViewById(R.id.historico);
         if(valor != ""){
             arr.add(valor);
             valor="";
         }
+        System.out.println("ultimo "+arr.get(arr.size() - 1));
         //Verificando se ja foi inserido algum valor
         if(arr.size() == 0){
             Toast.makeText(this, "Insira primeiro os valores", Toast.LENGTH_SHORT).show();
@@ -73,13 +82,14 @@ public class MainActivity extends AppCompatActivity {
             if (isFloat(arr.get(arr.size() - 1))) {
                 arr.add(btn);
                 result.setText(result.getText().toString() + " " + btn + " ");
+                historico.setText(historico.getText().toString() + " " + btn + " ");
             } else {
-            String substring = result.getText().toString().substring(0, result.getText().toString().length() - 2);
-            arr.set(arr.size()-1, btn);
-            result.setText(substring + arr.get(arr.size() - 1) + " ");
-            System.out.println(arr.size());
+                String substring = result.getText().toString().substring(0, result.getText().toString().length() - 2);
+                arr.set(arr.size()-1, btn);
+                result.setText(substring + arr.get(arr.size() - 1) + " ");
+                historico.setText(substring + arr.get(arr.size() - 1) + " ");
             }
-            System.out.println(arr);
+            System.out.println("array " + arr);
         }
     }
 
@@ -90,11 +100,11 @@ public class MainActivity extends AppCompatActivity {
             valor="";
         }
         TextView result = (TextView)findViewById(R.id.resultado);
-        if(result.getText().toString() == "" || arr.size() <= 1){
-            Toast.makeText(this, "Insira todos o valores", Toast.LENGTH_SHORT).show();
+        if(!isFloat(arr.get(arr.size() - 1))) {
+            System.out.println("aqui " + arr.get(arr.size() - 1));
+            Toast.makeText(this, "Insira os proximos numeros", Toast.LENGTH_SHORT).show();
         } else {
             if(!isFloat(arr.get(arr.size() - 1))) {
-                System.out.println("aqui " + arr.get(arr.size() - 1));
                 Toast.makeText(this, "Insira os proximos numeros", Toast.LENGTH_SHORT).show();
             } else {
                 System.out.println(arr);
@@ -131,6 +141,23 @@ public class MainActivity extends AppCompatActivity {
                                 i = 0;
                             }
                         }
+
+//                        if (Objects.equals(arr.get(i), "^")) {
+//                            double num1 = Double.parseDouble(arr.get(i - 1));
+//                            double num2 = Double.parseDouble(arr.get(i + 1));
+//                            if(Objects.equals(arr.get(i + 1), "0")){
+//                                arr.set(i, "1");
+//                                arr.remove(i + 1);
+//                                arr.remove(i - 1);
+//                                i = 0;
+//                            } else {
+//                                double resultado = elevado(num1, num2);
+//                                arr.set(i, String.valueOf(resultado));
+//                                arr.remove(i + 1);
+//                                arr.remove(i - 1);
+//                                i = 0;
+//                            }
+//                        }
                     } else {
                         if (Objects.equals(arr.get(i), "+")) {
                             double num1 = Double.parseDouble(arr.get(i - 1));
@@ -157,13 +184,10 @@ public class MainActivity extends AppCompatActivity {
                         break;
                     }
                 }
-                if (Float.parseFloat(arr.get(0)) % 1 == 0) {
-                    result.setText(String.format("%.0f", Float.parseFloat(arr.get(0))));
-                } else {
-                    result.setText(arr.get(0));
-                }
             }
         }
+        result.setText(arr.get(0));
+        System.out.println(arr);
     }
 
     //Funções de operadores matematicos
@@ -183,6 +207,14 @@ public class MainActivity extends AppCompatActivity {
         return num1 / num2;
     }
 
+    public static double elevado(double num1, double num2){
+        double result = 1;
+        for(int i = 0; i < num2; i++){
+            result *= num1;
+        }
+        return result;
+    }
+
     //Função para verificar se um numero é float ou não
     public static boolean isFloat(String num){
         try{
@@ -196,8 +228,9 @@ public class MainActivity extends AppCompatActivity {
     //Função para limpar todos os valores
     public void clear(View view) {
         TextView result = (TextView)findViewById(R.id.resultado);
+        TextView historico = (TextView) findViewById(R.id.historico);
         result.setText("");
-        arr.clear();
+        historico.setText("");
         valor = "";
     }
 }
